@@ -1,0 +1,14 @@
+stages:
+  - deploy
+
+before_script:
+  - apt-get update
+  - apt-get install -y zip
+
+deploy_lambda:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - cd saveVisit/ && zip -r save_api_code.zip .
+    - ls
+    - aws lambda update-function-code --function-name saveVisit --zip-file fileb://save_api_code.zip
